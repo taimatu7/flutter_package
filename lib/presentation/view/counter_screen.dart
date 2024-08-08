@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../view_model/counter_screen_view_model.dart';
+import '../view_model/count_notifier.dart';
 
 class CounterScreen extends ConsumerStatefulWidget {
   const CounterScreen({super.key});
@@ -13,6 +13,8 @@ class CounterScreen extends ConsumerStatefulWidget {
 class _CounterScreenState extends ConsumerState<CounterScreen> {
   @override
   Widget build(BuildContext context) {
+    final count = ref.watch(countNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -25,14 +27,14 @@ class _CounterScreenState extends ConsumerState<CounterScreen> {
               'You have pushed the button this many times:',
             ),
             Text(
-              ref.watch(counterScreenViewModelProvider).toString(),
+              count.value.toString(),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ref.read(counterScreenViewModelProvider.notifier).increment,
+        onPressed: ref.read(countNotifierProvider.notifier).increment,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
