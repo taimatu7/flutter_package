@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_package/presentation/view_model/holiday_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../view_model/count_notifier.dart';
@@ -13,7 +14,7 @@ class CounterScreen extends ConsumerStatefulWidget {
 class _CounterScreenState extends ConsumerState<CounterScreen> {
   @override
   Widget build(BuildContext context) {
-    final count = ref.watch(countNotifierProvider);
+    final holiday = ref.watch(holidayNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,17 +25,17 @@ class _CounterScreenState extends ConsumerState<CounterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              '今年はじめの祝日',
             ),
             Text(
-              count.value.toString(),
+              '${holiday?.countryCode ?? ''} : ${holiday?.date ?? ''}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ref.read(countNotifierProvider.notifier).increment,
+        onPressed: ref.read(holidayNotifierProvider.notifier).fetch,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
