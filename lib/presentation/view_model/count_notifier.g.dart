@@ -6,21 +6,19 @@ part of 'count_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$countNotifierHash() => r'4294b378383e06d0d9b7326b1af542367d326840';
+String _$countHash() => r'0a7c72dc05d325da94fcac2b7191164065686f0c';
 
-/// See also [CountNotifier].
-@ProviderFor(CountNotifier)
-final countNotifierProvider =
-    AutoDisposeNotifierProvider<CountNotifier, Count>.internal(
-  CountNotifier.new,
-  name: r'countNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$countNotifierHash,
+/// See also [count].
+@ProviderFor(count)
+final countProvider = AutoDisposeFutureProvider<int>.internal(
+  count,
+  name: r'countProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$countHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CountNotifier = AutoDisposeNotifier<Count>;
+typedef CountRef = AutoDisposeFutureProviderRef<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

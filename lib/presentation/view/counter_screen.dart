@@ -13,28 +13,32 @@ class CounterScreen extends ConsumerStatefulWidget {
 class _CounterScreenState extends ConsumerState<CounterScreen> {
   @override
   Widget build(BuildContext context) {
-    final count = ref.watch(countNotifierProvider);
+    // final count = ref.watch(countNotifierProvider);
+    // 非同期処理の結果を取得
+    final value = ref.watch(countProvider);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              count.value.toString(),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: value.when(
+        data: (data) {
+          // 非同期処理の結果を表示
+          return Text(data.toString());
+        },
+        error: (error, stackTrace) {
+          // エラーが発生した場合
+          return Text(error.toString());
+        },
+        loading: () {
+          // ローディング中
+          return const CircularProgressIndicator();
+        },
+        skipLoadingOnRefresh: false,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ref.read(countNotifierProvider.notifier).increment,
+        // tap時に非同期処理を実行
+        onPressed: () => ref.invalidate(countProvider),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
