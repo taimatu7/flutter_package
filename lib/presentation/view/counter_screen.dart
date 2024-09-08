@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../view_model/count_notifier.dart';
-
-class CounterScreen extends ConsumerStatefulWidget {
+class CounterScreen extends HookConsumerWidget {
   const CounterScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CounterScreenState();
-}
+  Widget build(BuildContext context, ref) {
+    // 画面で状態管理したい変数定義
+    final count = useState(0);
+    // 初回のbuildかどうかを判定する変数
+    final isFirstRun = useState(true);
 
-class _CounterScreenState extends ConsumerState<CounterScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final count = ref.watch(countNotifierProvider);
+    // initStateの代わり
+    useEffect(() {
+      print("初回処理");
+      return null;
+      // 初回のみの場合は空の配列を返す
+    }, []);
+
+    // 値が変更された場合の処理
+    useEffect(() {
+      if (isFirstRun.value) {
+        isFirstRun.value = false;
+        return null;
+      }
+      print("countが変更されました");
+      return null;
+      // countが変更された場合の処理
+    }, [count.value]);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +49,9 @@ class _CounterScreenState extends ConsumerState<CounterScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ref.read(countNotifierProvider.notifier).increment,
+        onPressed: () {
+          count.value++;
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
